@@ -1,0 +1,62 @@
+======================== Version 1.0 ========================
+while True:
+    = Raspberry captures a frame.
+    = We process the frame for face detection or characters
+        > if a face is detected:
+            > if the face is authenticated:
+                = We may open a door or do nothing.
+            > if the face is unknown:
+                = We send SMS alarm message.
+        > if characters are detected:
+            =Run OCR
+            > if the characters form known string
+                = it ok.
+            > if the characters form unknown string
+                = We send SMS alarm message.
+    = we send the frame for an online video stream
+
+
+attach_interrupt(commands coming from web)
+    > if the command is CAMERA_RIGHT
+        = rotate servo right.
+    > if the command is CAMERA_LEFT
+        = rotate servo left.
+
+-------------------------------------------------------------
+
+======================== Version 2.0 ========================
+Raspberry{
+    while True:
+        = stream to web server.
+        > if there is a command from web server:
+            > if command == CAMERA_LEFT
+                = move the camera to the left.
+            > if command == CAMERA_RIGHT
+                = move the camera to the right.
+            > if command == STRANGER_FACE_DETECTED
+                = send SMS alarm.
+            > if command == STRANGER_CAR_DETECTED
+                = send SMS alarm.
+}
+
+web server{
+    script1{
+        while True:
+            = receive stream from Raspberry
+            = apply OCR and FACE_RECOGNITION on stream frames
+            > if Stranger face detected:
+                = send STRANGER_FACE_DETECTED command to raspberry
+            > if Stranger car detected:
+                = send STRANGER_CAR_DETECTED command to raspberry
+            = stream the web page.
+    }
+    script2{
+        while True:
+            = wait for commands from web page interface
+            > if CAMERA_LEFT comes from web page
+                = send CAMERA_LEFT to Raspberry
+            > if CAMERA_RIGHT comes from web page
+                = send CAMERA_RIGHT to Raspberry
+    }
+}
+-------------------------------------------------------------
