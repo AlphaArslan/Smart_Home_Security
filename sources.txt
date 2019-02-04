@@ -1,8 +1,10 @@
 = Face Detection on a video stream
 	+ https://www.pyimagesearch.com/2018/06/18/face-recognition-with-opencv-python-and-deep-learning/
 
-= Stream video from Raspberry over local network to web server
-	+ motion eye
+
+= Stream video from Raspberry over local network to pc
 	+ netcat - named pipe
+		https://stackoverflow.com/questions/35166111/opencv-python-reading-video-from-named-pipe
+
 
 = stream video from python script to web page
