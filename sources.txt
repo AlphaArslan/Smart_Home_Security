@@ -4,7 +4,17 @@
 
 = Stream video from Raspberry over local network to pc
 	+ netcat - named pipe
-		https://stackoverflow.com/questions/35166111/opencv-python-reading-video-from-named-pipe
+		- https://stackoverflow.com/questions/35166111/opencv-python-reading-video-from-named-pipe
 
+	= install netcat on windows 
+		- download from https://joncraton.org/blog/46/netcat-for-windows/
+		- put the downloaded file in c:\nc folder
+		- extract here
+		- add location to Environment Path Variable
+	
+	= start netcat video file streaming command			[linux terminal]
+		cat <video_file> | netcat -l -p <port_number>		
+	= receive the stream into vlc					[windows cmd]
+		nc <streamer_IP> <port_number> | vlc -
 
 = stream video from python script to web page
