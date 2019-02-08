@@ -1,6 +1,8 @@
 = Face Detection on a video stream
 	+ https://www.pyimagesearch.com/2018/06/18/face-recognition-with-opencv-python-and-deep-learning/
-
+		= setting up a windows machine for face Recognition
+			- install python 3.7
+			- 
 
 = Stream video from Raspberry over local network to pc
 	+ netcat - named pipe
