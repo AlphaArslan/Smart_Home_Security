@@ -1,13 +1,11 @@
 = Face Detection on a video stream
 	+ https://www.pyimagesearch.com/2018/06/18/face-recognition-with-opencv-python-and-deep-learning/
-		= setting up a windows machine for face Recognition
-			- install python 3.7
-			- 
+		= setting up the machine
 
 = Stream video from Raspberry over local network to pc
 	+ netcat - named pipe
 		= stream from raspberry pi camera to another machine
-			- https://www.raspberrypi.org/blog/camera-board-available-for-sale/
+			- https://raspberrypi.stackexchange.com/questions/27082/how-to-stream-raspivid-to-linux-and-osx-using-gstreamer-vlc-or-netcat
 
 		= stream a video file from linux to windows
 			- https://stackoverflow.com/questions/35166111/opencv-python-reading-video-from-named-pipe
