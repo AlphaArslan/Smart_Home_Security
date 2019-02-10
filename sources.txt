@@ -1,6 +1,9 @@
 = Face Detection on a video stream
+	= install opencv4 ubuntu & preparing python3
+		+ https://www.pyimagesearch.com/2018/08/15/how-to-install-opencv-4-on-ubuntu/
+	
 	= face recognition on video
-		+  https://www.pyimagesearch.com/2018/06/18/face-recognition-with-opencv-python-and-deep-learning/
+		+ https://www.pyimagesearch.com/2018/06/18/face-recognition-with-opencv-python-and-deep-learning/
 
 	= python catch piped stream 
 		+ https://stackoverflow.com/questions/35166111/opencv-python-reading-video-from-named-pipe
