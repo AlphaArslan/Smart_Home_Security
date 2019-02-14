@@ -12,7 +12,9 @@
 	+ netcat - named pipe
 		= stream from raspberry pi camera to another machine
 			- https://raspberrypi.stackexchange.com/questions/27082/how-to-stream-raspivid-to-linux-and-osx-using-gstreamer-vlc-or-netcat
-
+				* [machine]: nc -l -p {port} |mplayer -fps 200 -demuxer h264es -
+				* [RPi]	   : raspivid -t 0 -w 1080 -h 720 -hf -fps 30 -o - | nc {machine_ip} {port}
+ 
 		= stream a video file from linux to windows
 			- https://stackoverflow.com/questions/35166111/opencv-python-reading-video-from-named-pipe
 
