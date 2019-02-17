@@ -15,12 +15,13 @@ def RSAencrypt(data):
 
 def captureFrame():
     camera.capture(rawCapture, format="bgr")
-    return rawCapture
+    image = rawCapture.array
+    return image
+    
 ################### SETUP
 my_ip = "192.168.1.5"
 his_ip = "192.168.1.6"
 port = 2124
-msg = ""
 
 s = socket.socket()
 s.bind((my_ip,port))

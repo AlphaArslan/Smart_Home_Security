@@ -24,11 +24,9 @@ s.listen(1)
 conn, addr = s.accept()
 print "connected to : ", addr
 
-rawCapture = PiRGBArray(camera)
 ################### Main
 
-rawCapture = conn.recv(50000)
-image = rawCapture.array
+image = conn.recv(50000)
 
 cv2.imshow("Image", image)
 cv2.waitKey(0)
