@@ -6,8 +6,8 @@ import numpy as np
 import sys
 import time
 
-from getFrames    import *
-from frameProcess import *
+from Communication import *
+from frameProcess  import *
 
 
 # script arguments
@@ -36,13 +36,18 @@ cv2.namedWindow("Image")
 host = args["rpi"]
 port = int(args["port"])
 sock = create_socket()
+sock.settimeout(1)
+internal_sock = create_socket()
 
 
-#loop
-while True:
-	frame = get_frames(host, port, sock)
-	processed_frame = process_frame(frame, args["detection_method"], data)
 
+if __name__ == '__main__':
+	while True:
+		frame = get_frames(host, port, sock)
+		names , processed_frame = process_frame(frame, args["detection_method"], data)
+		ret, jpeg = cv2.imencode('.jpg', processed_frame)
+		frame_bytes = jpeg.tobytes()
+		send_frame_bytes(frame_bytes, internal_sock, 4575)
 
-print("The client is quitting. If you wish to quite the server, simply call : \n")
-print("echo -n \"quit\" > /dev/udp/{}/{}".format(host, port))
+# print("The client is quitting. If you wish to quite the server, simply call : \n")
+# print("echo -n \"quit\" > /dev/udp/{}/{}".format(host, port))
