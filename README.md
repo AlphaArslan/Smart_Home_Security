@@ -2,7 +2,7 @@
 Raspberry based project that monitors home entrance.
 
 ## setup
-#### 4. System packages
+#### System packages
 > sudo apt-get install libjasper-dev
 
 > sudo apt-get install openexr
@@ -22,3 +22,8 @@ Raspberry based project that monitors home entrance.
 > sudo apt-get install libatlas-base-dev gfortran
 
 > sudo apt-get install libqt4-dev
+
+#### Installing Python Library:
+> sudo pip3 install opencv-python
+
+> sudo pip3 install numpy
