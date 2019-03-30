@@ -1,3 +1,16 @@
+<!-- <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}"> -->
+<html>
+  <head>
+    <title>Video Streaming </title>
+  </head>
+  <body>
+    <h1>Video Streaming</h1>
+    <img id="bg" alt="No video feed" width="800" src="{{ url_for('video_feed') }}">
+    <!-- <img id="bg" alt="No video feed" width="800" src="/static/9H.jpg"> -->
+  </body>
+</html>
+
+
 <!DOCTYPE html>
 <html lang="en" class="no-js">
 
@@ -64,7 +77,7 @@
 
 				<!-- Submenu 3 -->
 				<ul data-menu="submenu-3" id="submenu-3" class="menu__level" tabindex="-1" role="menu" aria-label="Administration">
-					<li class="menu__item" role="menuitem"><a class="menu__link" href="#">Spare1</a></li>
+          <li class="menu__item" role="menuitem"><a class="menu__link" href="#">Spare1</a></li>
 					<li class="menu__item" role="menuitem"><a class="menu__link" href="#">change Creds</a></li>
 					<li class="menu__item" role="menuitem"><a class="menu__link" href="/logout">LogOut</a></li>
 				</ul>
@@ -77,11 +90,33 @@
 
 			</div>
 		</nav>
+
+
+
+
 		<div class="content">
-			<p class="info">Kindly Choose your Destination on the left</p>
-			<!-- Ajax loaded content here -->
-		</div>
-	</div>
+
+      <div class="video_feed">
+        <!-- <img id="bg" align="middle" alt="No video feed" width="800" src="{{ url_for('video_feed') }}"> -->
+        <img id="bg" align="middle" alt="No video feed" width="800" src="/static/9H.jpg">
+  			<!-- Ajax loaded content here -->
+      </div>
+
+      <div class="servo">
+        <div class="right">
+          <button onclick="window.location.href = '/servo_right';">Right</button>
+        </div>
+
+        <div class="left">
+          <button onclick="window.location.href = '/servo_left';">Left</button>
+        </div>
+      </div>
+
+    </div>
+
+
+
+  </div>
 	<!-- /view -->
 	<script src="static/js/classie.js"></script>
 	<script src="static/js/dummydata.js"></script>
