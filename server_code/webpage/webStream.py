@@ -1,15 +1,26 @@
+##################### IMPORT #####################
 from flask import Flask, Response, session, render_template, request, redirect, g, url_for
 import socket
 from Communication import *
 import os
 
-#start Flask app
+##################### Global #####################
+# control panel
+FRAMES_PORT = 4575
+SERVO_PORT  = 5532
+RIGHT_COMMAND = 'R'
+LEFT_COMMAND  = 'L'
+RPI_ADDRESS = '192.168.1.5'
+
+# start Flask app
 app = Flask(__name__)
 app.secret_key = os.urandom(24)
 
 # create internal UDP socket to catch frames
-sock = create_socket_receiving(4151)                                            # Hard Coded port
+sock = create_socket_receiving(FRAMES_PORT)                                            # Hard Coded port
+servo_sock = create_socket()
 
+################### Funcutions ###################
 def web_stream():
     while True:
         frame_bytes , address = sock.recvfrom(65507)
@@ -39,14 +50,22 @@ def login():
             return redirect('/')
     return render_template("login.html")
 
-@app.route('/temp', methods=['GET', 'POST'])
-def temp():
-    # if request.method == 'POST':
-    #     session.pop('user', None)
-    #     if request.form['username'] == 'admin' and request.form['password'] == 'admin':
-    #         return Response('Success')
-    #     # print(request.form)
-    return render_template("temp.html")
+@app.route('/logout')
+def Logout():
+    session.pop('user')
+    return redirect(url_for('login'))
+
+######### INCOMPLETE
+@app.route('/change_creds', methods=['GET', 'POST'])
+def change_creds():
+    if g.user is None:
+        return redirect(url_for('login'))
+    if request.method == 'POST':
+        session.pop('user', None)
+        if request.form['username'] == 'admin' and request.form['password'] == 'admin':
+            session['user'] = request.form['username']
+            return redirect('/')
+    return render_template("login.html")
 
 
 @app.route('/video_feed')
@@ -56,6 +75,26 @@ def video_feed():
     return Response(web_stream(),
                 mimetype='multipart/x-mixed-replace; boundary=frame')
 
+@app.route('/video_stream')
+def video_stream():
+    if g.user is None:
+        return redirect(url_for('login'))
+    return render_template('stream.html')
+
+@app.route('/servo_right')
+def servo_right():
+    print("Servo Right Command")
+    servo_sock.sendto(RIGHT_COMMAND.encode('ascii'), (RPI_ADDRESS, SERVO_PORT))
+    return render_template('stream.html')
+
+@app.route('/servo_left')
+def servo_left():
+    print("Servo Left Command")
+    servo_sock.sendto(LEFT_COMMAND.encode('ascii'), (RPI_ADDRESS, SERVO_PORT))
+    return render_template('stream.html')
+
+
+###################### loop ######################
 if __name__ == '__main__':
     # app.run(host='0.0.0.0', debug=True)
-    app.run(host='192.168.1.6', debug=True)
+    app.run(host='0.0.0.0', debug=True)
