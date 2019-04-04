@@ -7,10 +7,10 @@ import os
 ##################### Global #####################
 # control panel
 FRAMES_PORT = 4575
-SERVO_PORT  = 5532
+RPI_PORT  = 5532
 RIGHT_COMMAND = 'R'
 LEFT_COMMAND  = 'L'
-RPI_ADDRESS = '192.168.1.5'
+RPI_ADDRESS = '192.168.1.7'
 
 # start Flask app
 app = Flask(__name__)
@@ -84,13 +84,13 @@ def video_stream():
 @app.route('/servo_right')
 def servo_right():
     print("Servo Right Command")
-    servo_sock.sendto(RIGHT_COMMAND.encode('ascii'), (RPI_ADDRESS, SERVO_PORT))
+    servo_sock.sendto(RIGHT_COMMAND.encode('ascii'), (RPI_ADDRESS, RPI_PORT))
     return render_template('stream.html')
 
 @app.route('/servo_left')
 def servo_left():
     print("Servo Left Command")
-    servo_sock.sendto(LEFT_COMMAND.encode('ascii'), (RPI_ADDRESS, SERVO_PORT))
+    servo_sock.sendto(LEFT_COMMAND.encode('ascii'), (RPI_ADDRESS, RPI_PORT))
     return render_template('stream.html')
 
 
