@@ -12,6 +12,9 @@ RIGHT_COMMAND = 'R'
 LEFT_COMMAND  = 'L'
 RPI_ADDRESS = '192.168.1.7'
 
+temp_data  = [26, 27, 26, 25, 26, 27, 27, 28, 27, 26, 27, 26]
+smoke_data = [1, 2, 1, 2, 3, 4, 3, 0, 1, 2, 0]
+
 # start Flask app
 app = Flask(__name__)
 app.secret_key = os.urandom(24)
@@ -67,6 +70,10 @@ def change_creds():
             return redirect('/')
     return render_template("login.html")
 
+@app.route('/sensors')
+def sensors():
+    return render_template('sensor.html', TEMP_DATA = temp_data, SMOKE_DATA = smoke_data)
+
 
 @app.route('/video_feed')
 def video_feed():
@@ -93,6 +100,14 @@ def servo_left():
     servo_sock.sendto(LEFT_COMMAND.encode('ascii'), (RPI_ADDRESS, RPI_PORT))
     return render_template('stream.html')
 
+
+@app.route('/scope')
+def scope():
+    return render_template('scope.html')
+
+@app.route('/contact_me')
+def contact_me():
+    return render_template('contact_me.html')
 
 ###################### loop ######################
 if __name__ == '__main__':
