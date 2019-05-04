@@ -13,6 +13,8 @@ import cv2
 import sys
 from threading import Thread, Lock
 import sys
+import base64
+
 
 if(len(sys.argv) != 2):
         print("Usage : {} interface".format(sys.argv[0]))
@@ -34,19 +36,19 @@ port = 1080
 
 class VideoGrabber(Thread):
         """A threaded video grabber.
-        
+
         Attributes:
-        encode_params (): 
-        cap (str): 
+        encode_params ():
+        cap (str):
         attr2 (:obj:`int`, optional): Description of `attr2`.
-        
+
         """
         def __init__(self, jpeg_quality):
                 """Constructor.
 
                 Args:
                 jpeg_quality (:obj:`int`): Quality of JPEG encoding, in 0, 100.
-                
+
                 """
                 Thread.__init__(self)
                 self.encode_param = [int(cv2.IMWRITE_JPEG_QUALITY), jpeg_quality]
@@ -69,13 +71,13 @@ class VideoGrabber(Thread):
                         cpy = self.buffer.copy()
                         self.lock.release()
                         return cpy
-                
+
         def run(self):
                 while self.running:
                         success, img = self.cap.read()
                         if not success:
                                 continue
-                        
+
                         # JPEG compression
                         # Protected by a lock
                         # As the main thread may asks to access the buffer
@@ -114,10 +116,24 @@ while(running):
                         continue
                 # We sent back the buffer to the client
                 sock.sendto(buffer.tobytes(), address)
+
+        elif(data == 'base'):
+                print('base command recieved')
+                buffer = grabber.get_buffer()
+                if buffer is None:
+                        print('None buffer')
+                        continue
+                if len(buffer) > 65507:
+                        print("The message is too large to be sent within a single UDP datagram. We do not handle splitting the message in multiple datagrams")
+                        sock.sendto("FAIL",address)
+                        continue
+                sock.sendto(base64.b64encode(buffer), address)
+
+
         elif(data == "quit"):
                 grabber.stop()
                 running = False
-        
+
 print("Quitting..")
 grabber.join()
 sock.close()
