@@ -17,6 +17,19 @@
 	<!-- menu styles -->
 	<link rel="stylesheet" type="text/css" href="static/css/component.css" />
 	<script src="static/js/modernizr-custom.js"></script>
+
+
+  <script src="static/js/Chart.min.js"></script>
+	<script src="static/js/utils.js"></script>
+	<style>
+	canvas{
+		-moz-user-select: none;
+		-webkit-user-select: none;
+		-ms-user-select: none;
+	}
+	</style>
+
+
 </head>
 
 <body>
@@ -30,7 +43,7 @@
 				<h2 class="dummy-heading"> Harish </h2>
 			</div>
 			<div class="bp-header__main">
-				<span class="bp-header__present">Home Security System: Administration Panel </span>
+				<span class="bp-header__present">Home Security System: Administration Panel</span>
 				<h1 class="bp-header__title">A Prototype</h1>
 
 			</div>
@@ -63,13 +76,27 @@
 					<!-- <li class="menu__item" role="menuitem"><a class="menu__link" href="#">change Creds</a></li> -->
 					<li class="menu__item" role="menuitem"><a class="menu__link" href="/logout">LogOut</a></li>
 				</ul>
+
 			</div>
 		</nav>
+
+
+
 		<div class="content">
-			<p class="info">Kindly Choose your Destination on the left</p>
-			<!-- Ajax loaded content here -->
-		</div>
-	</div>
+
+      <div class="charts">
+        <!-- <div style="width:75%; "> -->
+      		<canvas id="canvas"></canvas>
+      	<!-- </div> -->
+      	<br>
+      </div>
+
+  	</div>
+
+
+
+
+  </div>
 	<!-- /view -->
 	<script src="static/js/classie.js"></script>
 	<script src="static/js/dummydata.js"></script>
@@ -118,6 +145,94 @@
 		}
 	})();
 	</script>
+
+
+  <script>
+		var MONTHS = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+		var config = {
+			type: 'line',
+			data: {
+				labels: ['-05:00', '-04:30', '-04:00', '-03:30', '-03:00', '-02:30', '-02:00', '-01:30', '-01:00', '-00:30', 'now'],
+				datasets: [{
+					label: 'Temprature',
+					backgroundColor: window.chartColors.yellow,
+					borderColor: window.chartColors.yellow,
+					data: [
+						{{ TEMP_DATA[0] }},
+						{{ TEMP_DATA[1] }},
+						{{ TEMP_DATA[2] }},
+            {{ TEMP_DATA[3] }},
+						{{ TEMP_DATA[4] }},
+						{{ TEMP_DATA[5] }},
+						{{ TEMP_DATA[6] }},
+            {{ TEMP_DATA[7] }},
+            {{ TEMP_DATA[8] }},
+						{{ TEMP_DATA[9] }},
+						{{ TEMP_DATA[10] }}
+					],
+					fill: false,
+				}
+        , {
+					label: 'Smoke',
+					fill: false,
+					backgroundColor: window.chartColors.red,
+					borderColor: window.chartColors.red,
+					data: [
+          {{ SMOKE_DATA[0] }},
+          {{ SMOKE_DATA[1] }},
+          {{ SMOKE_DATA[2] }},
+          {{ SMOKE_DATA[3] }},
+          {{ SMOKE_DATA[4] }},
+          {{ SMOKE_DATA[5] }},
+          {{ SMOKE_DATA[6] }},
+          {{ SMOKE_DATA[7] }},
+          {{ SMOKE_DATA[8] }},
+          {{ SMOKE_DATA[9] }},
+          {{ SMOKE_DATA[10] }}
+					],
+				}
+        ]
+			},
+			options: {
+				responsive: true,
+				title: {
+					display: true,
+					text: 'Sensor Reading'
+				},
+				tooltips: {
+					mode: 'index',
+					intersect: false,
+				},
+				hover: {
+					mode: 'nearest',
+					intersect: true
+				},
+				scales: {
+					xAxes: [{
+						display: true,
+						scaleLabel: {
+							display: true,
+							labelString: 'Month'
+						}
+					}],
+					yAxes: [{
+						display: true,
+						scaleLabel: {
+							display: true,
+							labelString: 'Value'
+						}
+					}]
+				}
+			}
+		};
+		window.onload = function() {
+			var ctx = document.getElementById('canvas').getContext('2d');
+			window.myLine = new Chart(ctx, config);
+		};
+	</script>
+
+
+
 </body>
 
 </html>

@@ -268,6 +268,33 @@ a:hover {
 	border: 3px solid blue;
 }
 
+.content .charts{
+	min-height: 1000px;
+	width: 85%;
+	height: 70%;
+}
+
+.content .charts canvas{
+	min-height: 80%;
+	margin-left: 10%;
+}
+
+.content .scope_text{
+	/* margin-top: 10%;
+	margin-left: 10%; */
+	margin: 10%;
+	width: 80%;
+	text-align: center;
+}
+
+.content .scope_text img{
+	margin-top: 5%;
+	margin-bottom: 5%;
+	margin-left: 10%;
+	margin-right: 10%;
+	width: 80%;
+}
+
 
 .content--loading {
 	background: url(../img/loading.svg) no-repeat 50% 50%;

@@ -7,7 +7,7 @@
 	<meta charset="UTF-8" />
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Blueprint: Multi-Level Menu</title>
+	<title>Home Security System</title>
 	<meta name="description" content="Blueprint: A basic template for a responsive multi-level menu" />
 	<meta name="keywords" content="blueprint, template, html, css, menu, responsive, mobile-friendly" />
 	<meta name="author" content="Codrops" />
@@ -28,11 +28,11 @@
 		<header class="bp-header cf">
 			<div class="dummy-logo">
 				<!-- <div class="dummy-icon foodicon foodicon--coconut"></div> -->
-        <h2 class="dummy-heading">Home Security Harish </h2>
+        <h2 class="dummy-heading">Home Security </h2>
 				<h2 class="dummy-heading"> Harish </h2>
 			</div>
 			<div class="bp-header__main">
-				<span class="bp-header__present">Home Security & Remote Control </span>
+				<span class="bp-header__present">Home Security System: Administration Panel </span>
 				<h1 class="bp-header__title">A Prototype</h1>
 
 			</div>
@@ -43,38 +43,27 @@
 			<button class="action action--close" aria-label="Close Menu"><span class="icon icon--cross"></span></button>
 			<div class="menu__wrap">
 				<ul data-menu="main" class="menu__level" tabindex="-1" role="menu" aria-label="All">
+					<li class="menu__item" role="menuitem"><a class="menu__link" data-submenu="submenu-2" aria-owns="submenu-2" href="#">About</a></li>
 					<li class="menu__item" role="menuitem"><a class="menu__link" data-submenu="submenu-1" aria-owns="submenu-1" href="#">Monitor</a></li>
-					<li class="menu__item" role="menuitem"><a class="menu__link" data-submenu="submenu-2" aria-owns="submenu-2" href="#">Help</a></li>
 					<li class="menu__item" role="menuitem"><a class="menu__link" data-submenu="submenu-3" aria-owns="submenu-3" href="#">Administration</a></li>
-					<li class="menu__item" role="menuitem"><a class="menu__link" data-submenu="submenu-4" aria-owns="submenu-4" href="#">Spare</a></li>
 				</ul>
 				<!-- Submenu 1 -->
 				<ul data-menu="submenu-1" id="submenu-1" class="menu__level" tabindex="-1" role="menu" aria-label="Monitor">
 					<li class="menu__item" role="menuitem"><a class="menu__link" href="/video_stream">Video Stream</a></li>
-					<li class="menu__item" role="menuitem"><a class="menu__link" href="#">Sensors</a></li>
-					<li class="menu__item" role="menuitem"><a class="menu__link" href="#">Spare1</a></li>
-					<li class="menu__item" role="menuitem"><a class="menu__link" href="#">Spare2</a></li>
+					<li class="menu__item" role="menuitem"><a class="menu__link" href="/sensors">Sensors</a></li>
 				</ul>
 
 				<!-- Submenu 2 -->
 				<ul data-menu="submenu-2" id="submenu-2" class="menu__level" tabindex="-1" role="menu" aria-label="Help">
-					<li class="menu__item" role="menuitem"><a class="menu__link" href="#">How it works </a></li>
-					<li class="menu__item" role="menuitem"><a class="menu__link" href="#">contact me</a></li>
-					<li class="menu__item" role="menuitem"><a class="menu__link" href="#">Spare1</a></li>
-					<li class="menu__item" role="menuitem"><a class="menu__link" href="#">Spare2</a></li>
+					<li class="menu__item" role="menuitem"><a class="menu__link" href="/scope">Scope </a></li>
+					<li class="menu__item" role="menuitem"><a class="menu__link" href="/system_arc">System Architecture</a></li>
+					<li class="menu__item" role="menuitem"><a class="menu__link" href="/contact_me">Contact Me</a></li>
 				</ul>
 
 				<!-- Submenu 3 -->
 				<ul data-menu="submenu-3" id="submenu-3" class="menu__level" tabindex="-1" role="menu" aria-label="Administration">
-          <li class="menu__item" role="menuitem"><a class="menu__link" href="#">Spare1</a></li>
-					<li class="menu__item" role="menuitem"><a class="menu__link" href="#">change Creds</a></li>
+					<!-- <li class="menu__item" role="menuitem"><a class="menu__link" href="#">change Creds</a></li> -->
 					<li class="menu__item" role="menuitem"><a class="menu__link" href="/logout">LogOut</a></li>
-				</ul>
-
-				<!-- Submenu 4 -->
-				<ul data-menu="submenu-4" id="submenu-4" class="menu__level" tabindex="-1" role="menu" aria-label="Spare">
-					<li class="menu__item" role="menuitem"><a class="menu__link" href="#">Spare1</a></li>
-					<li class="menu__item" role="menuitem"><a class="menu__link" href="#">Spare2</a></li>
 				</ul>
 
 			</div>
