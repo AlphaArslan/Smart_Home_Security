@@ -3,6 +3,9 @@ import socket
 import netifaces as ni
 import pantilthat
 
+import serial
+import time
+
 from Communication import *
 
 ##################### Global #####################
@@ -13,6 +16,7 @@ UNKNOWN_COMMAND   = 'U'
 NETWORK_INTERFACE = 'wlan0'
 COMMAND_PORT      = 5532
 
+PHONE_NUMBER = "+201553801503"
 
 current_angle = 0
 
@@ -22,11 +26,21 @@ IP = ni.ifaddresses(NETWORK_INTERFACE)[2][0]['addr']
 # create internal UDP socket to catch commands
 sock = create_socket_receiving(COMMAND_PORT, host=IP)                                            # Hard Coded port
 
+# creating serial communication port for the GSM module
+phone = serial.Serial("/dev/ttyS0", baudrate=115200, timeout=1.0)
 
 ################### Funcutions ###################
 
 def send_sms_alert():
-    pass
+    phone.write(b'AT+CMGF=1\r')
+    result=phone.read(100)
+    print(result)
+
+    phone.write('AT+CMGS=\"87422459\"\r')
+    phone.write('this is an alert')
+    result=phone.read(100)
+    print(result)
+    print("SMS sent")
 
 ##################### setup ######################
 

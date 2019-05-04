@@ -15,12 +15,14 @@ from Communication import *
 #constants
 PWD         = os.path.dirname(os.path.realpath(__file__))       #returns path to project folder
 DB_PATH     = 'database.db'
-IMAGE_PATH  = PWD + '/tmp.jpg'
 api_url     = 'https://api.openalpr.com/v2/recognize_bytes?recognize_vehicle=1&country=us&secret_key=sk_d1f041e7fe7cef9f91f69fad'
 plate1      = "plate1"
 plate2      = "plate3"
 plate3      = "plate3"
 DELAY       = 5                                                 # time for servo opening
+
+# creating serial communication port for the GSM module
+phone = serial.Serial("/dev/ttyS0", baudrate=115200, timeout=1.0)
 
 # Pin Configuration
 servo_pin = 11
@@ -38,28 +40,28 @@ def check_plates(plate1, plate2, plate3):
     s = c.fetchone()
     while s is not None:
         if s[1] in (plate1, plate2, plate3):
-            allowed_fun(s)
-            break
+            return True
         s = c.fetchone()
+    return False
 
-def allowed_fun(s):
-    print(s[0] + " Car Found")
-    # open servo
-    servo_angle(90)
-    time.sleep(DELAY)
-    servo_angle(0)
+def send_sms_alert():
+    phone.write(b'AT+CMGF=1\r')
+    result=phone.read(100)
+    print(result)
 
-def servo_angle(angle):
-    duty = angle/18 + 2.5
-    GPIO.output(servo_pin, True)
-    servo_pwm.ChangeDutyCycle(duty)
+    phone.write('AT+CMGS=\"87422459\"\r')
+    phone.write('this is an alert')
+    result=phone.read(100)
+    print(result)
+    print("SMS sent")
+
 
 def get_ip(interface_name):
-        """Helper to get the IP adresse of the running server
-        """
-        import netifaces as ni
-        ip = ni.ifaddresses(interface_name)[2][0]['addr']
-        return ip  # should print "192.168.100.37"
+    """Helper to get the IP adresse of the running server
+    """
+    import netifaces as ni
+    ip = ni.ifaddresses(interface_name)[2][0]['addr']
+    return ip  # should print "192.168.100.37"
 
 
 ##################### setup ######################
@@ -88,12 +90,12 @@ while True :
         wait_for_cars()
 
         ######## get the frame
-        frame = get_frames(host, port, sock)
+        img_base64 = get_frames_base64(host, port, sock)
         print("--  Picture token")
 
         ######## process the image to get plates
-        with open(IMAGE_PATH, 'rb') as image_file:
-                img_base64 = base64.b64encode(image_file.read())
+        # with open(IMAGE_PATH, 'rb') as image_file:
+        #         img_base64 = base64.b64encode(image_file.read())
 
         print("--  sending image online")
         flag = True
@@ -127,4 +129,5 @@ while True :
         print("-   Plate Guess 3 :" + plate3 )
 
         ######## check the plate number
-        check_plates(plate1, plate2, plate3)
+         if check_plates(plate1, plate2, plate3) is False:
+             send_sms_alert()
