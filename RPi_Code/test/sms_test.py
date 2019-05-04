@@ -2,18 +2,15 @@ import serial
 import time
 
 
-PHONE_NUMBER = "+201553801503"
-
-
 # creating serial communication port for the GSM module
-phone = serial.Serial("/dev/ttyAMA0", baudrate=9600, timeout=1.0)
+phone = serial.Serial("/dev/ttyS0", baudrate=115200, timeout=1.0)
 
 def send_sms_alert():
-    phone.write('AT+CPIN=0000\r\n')
+    phone.write(b'AT+CMGF=1\r')
     result=phone.read(100)
     print(result)
 
-    phone.write('AT+CMGS="' + PHONE_NUMBER +'"\r\n')
+    phone.write('AT+CMGS=\"87422459\"\r')
     phone.write('this is an alert')
     result=phone.read(100)
     print(result)
