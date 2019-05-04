@@ -30,5 +30,18 @@ def get_frames(host, port, sock):
 
 	return frame
 
+def get_frames_base64(host, port, sock):
+	print("[INFO]:Sending BASE request...")
+	sent = sock.sendto("base".encode('ascii'), (host, port))
+
+	try:
+		answer, server = sock.recvfrom(65507)
+	except socket.timeout :
+		return get_frames_base64(host, port, sock)
+
+	print("[INFO]:Frame Received")
+	return answer
+
+
 def send_frame_bytes(frame_bytes, sock, port):
 	sock.sendto(frame_bytes, ("127.0.0.1", port))
