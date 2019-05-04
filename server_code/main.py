@@ -39,6 +39,30 @@ sock = create_socket()
 sock.settimeout(1)
 internal_sock = create_socket()
 
+##################### Global #####################
+unknown_counter = 0
+unknown_threshold = 3
+alert_sent = False
+RPI_PORT  = 5532
+UNKNOWN_COMMAND = 'U'
+
+################### Funcutions ###################
+def check_names(names):
+	for name in names :
+		if name is 'unknown':
+			unknown_counter += 1
+		else:
+			alert_sent = False
+			unknown_counter = 0
+
+	if unknown_counter > unknown_threshold :
+		send_alert()
+
+def send_alert():
+	if alert_sent is False:
+		sock.sendto(UNKNOWN_COMMAND.encode('ascii'), (host, RPI_PORT))
+		alert_sent = True
+
 
 
 if __name__ == '__main__':
