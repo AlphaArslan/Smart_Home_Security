@@ -33,3 +33,7 @@
 			nc <streamer_IP> <port_number> > fifo
 
 = stream video from python script to web page
+
+
+= Rpi and GSM 
+	+ https://www.instructables.com/id/Raspberry-Pi-With-a-GSM-Module/
