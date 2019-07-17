@@ -5,6 +5,7 @@ import cv2
 import numpy as np
 import sys
 import time
+import smtplib, ssl
 
 from Communication import *
 from frameProcess  import *
@@ -44,7 +45,17 @@ unknown_counter = 0
 unknown_threshold = 3
 alert_sent = False
 RPI_PORT  = 5532
-UNKNOWN_COMMAND = 'U'
+# UNKNOWN_COMMAND = 'U'
+
+SMTP_PORT = 465  # For SSL
+SMTP_SERVER = "smtp.gmail.com"
+SENDER_EMAIL = "dev.script.21@gmail.com"  # Enter your address
+RECEIVER_EMAIL = "bluphanc@gmail.com"  # Enter receiver address
+SENDER_PASS = "0.9millidev"
+EMAIL_CONTENT = """\
+Subject: Warning
+
+Unkown person detected."""
 
 ################### Funcutions ###################
 def check_names(names):
@@ -56,13 +67,17 @@ def check_names(names):
 			unknown_counter = 0
 
 	if unknown_counter > unknown_threshold :
-		send_alert()
+		send_email()
+		unknown_counter = 0
 
-def send_alert():
+def send_email():
 	if alert_sent is False:
-		sock.sendto(UNKNOWN_COMMAND.encode('ascii'), (host, RPI_PORT))
+		# sock.sendto(UNKNOWN_COMMAND.encode('ascii'), (host, RPI_PORT))
+		context = ssl.create_default_context()
+		with smtplib.SMTP_SSL(SMTP_SERVER, SMTP_PORT, context=context) as server:
+		    server.login(SENDER_EMAIL, SENDER_PASS)
+		    server.sendmail(SENDER_EMAIL, RECEIVER_EMAIL, EMAIL_CONTENT)
 		alert_sent = True
-
 
 
 if __name__ == '__main__':
