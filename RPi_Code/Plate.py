@@ -6,6 +6,7 @@ import base64
 import json
 import time
 import os
+import smtplib, ssl
 
 import sqlite3
 import control_DB
@@ -20,6 +21,16 @@ plate1      = "plate1"
 plate2      = "plate3"
 plate3      = "plate3"
 DELAY       = 5                                                 # time for servo opening
+
+SMTP_PORT = 465  # For SSL
+SMTP_SERVER = "smtp.gmail.com"
+SENDER_EMAIL = "dev.script.21@gmail.com"  # Enter your address
+RECEIVER_EMAIL = "bluphanc@gmail.com"  # Enter receiver address
+SENDER_PASS = "0.9millidev"
+EMAIL_CONTENT = """\
+Subject: Warning
+
+Unkown Car detected."""
 
 # creating serial communication port for the GSM module
 phone = serial.Serial("/dev/ttyS0", baudrate=115200, timeout=1.0)
@@ -44,17 +55,11 @@ def check_plates(plate1, plate2, plate3):
         s = c.fetchone()
     return False
 
-def send_sms_alert():
-    phone.write(b'AT+CMGF=1\r')
-    result=phone.read(100)
-    print(result)
-
-    phone.write('AT+CMGS=\"87422459\"\r')
-    phone.write('this is an alert')
-    result=phone.read(100)
-    print(result)
-    print("SMS sent")
-
+def send_email():
+    context = ssl.create_default_context()
+    with smtplib.SMTP_SSL(SMTP_SERVER, SMTP_PORT, context=context) as server:
+        server.login(SENDER_EMAIL, SENDER_PASS)
+        server.sendmail(SENDER_EMAIL, RECEIVER_EMAIL, EMAIL_CONTENT)
 
 def get_ip(interface_name):
     """Helper to get the IP adresse of the running server
@@ -130,4 +135,4 @@ while True :
 
         ######## check the plate number
          if check_plates(plate1, plate2, plate3) is False:
-             send_sms_alert()
+             send_email()
