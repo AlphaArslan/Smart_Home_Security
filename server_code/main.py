@@ -59,6 +59,7 @@ Unkown person detected."""
 
 ################### Funcutions ###################
 def check_names(names):
+	global unknown_counter
 	for name in names :
 		if name is 'unknown':
 			unknown_counter += 1
@@ -71,6 +72,7 @@ def check_names(names):
 		unknown_counter = 0
 
 def send_email():
+	global alert_sent
 	if alert_sent is False:
 		# sock.sendto(UNKNOWN_COMMAND.encode('ascii'), (host, RPI_PORT))
 		context = ssl.create_default_context()

@@ -25,24 +25,20 @@ DELAY       = 5                                                 # time for servo
 SMTP_PORT = 465  # For SSL
 SMTP_SERVER = "smtp.gmail.com"
 SENDER_EMAIL = "dev.script.21@gmail.com"  # Enter your address
-RECEIVER_EMAIL = "bluphanc@gmail.com"  # Enter receiver address
+RECEIVER_EMAIL = "c3214376@uon.edu.au"  # Enter receiver address
 SENDER_PASS = "0.9millidev"
 EMAIL_CONTENT = """\
 Subject: Warning
 
 Unkown Car detected."""
 
-# creating serial communication port for the GSM module
-phone = serial.Serial("/dev/ttyS0", baudrate=115200, timeout=1.0)
-
 # Pin Configuration
 servo_pin = 11
-LASER     = 13
-DETECTOR  = 15
+DETECTOR  = 17
 
 ################### Funcutions ###################
 def wait_for_cars():
-    while GPIO.input(DETECTOR) is True:
+    while GPIO.input(DETECTOR) is 0:
         print('--- Waiting for cars')
         time.sleep(1)
 
@@ -51,11 +47,12 @@ def check_plates(plate1, plate2, plate3):
     s = c.fetchone()
     while s is not None:
         if s[1] in (plate1, plate2, plate3):
-            return True
+            return True , s[0]
         s = c.fetchone()
-    return False
+    return False , "Unknown"
 
 def send_email():
+    print("[INFO] unkown car detected")
     context = ssl.create_default_context()
     with smtplib.SMTP_SSL(SMTP_SERVER, SMTP_PORT, context=context) as server:
         server.login(SENDER_EMAIL, SENDER_PASS)
@@ -71,8 +68,7 @@ def get_ip(interface_name):
 
 ##################### setup ######################
 # setting up GPIO
-GPIO.setmode(GPIO.BOARD)
-GPIO.setup(LASER ,GPIO.OUT)
+GPIO.setmode(GPIO.BCM)
 GPIO.setup(DETECTOR ,GPIO.IN)
 GPIO.setup(servo_pin, GPIO.OUT)
 servo_pwm = GPIO.PWM(servo_pin, 50)                 #Servo PWM
@@ -110,7 +106,7 @@ while True :
                 except requests.exceptions.ConnectionError:
                         print("XX  Connection lost .. Please reconnect")
                         time.sleep(1)
-                else:			#no problem occuered
+                else:           #no problem occuered
                         flag = False
                         print("--  Connected .. waiting results")
         r = r.json()
@@ -134,5 +130,8 @@ while True :
         print("-   Plate Guess 3 :" + plate3 )
 
         ######## check the plate number
-         if check_plates(plate1, plate2, plate3) is False:
-             send_email()
+        ret , name = check_plates(plate1, plate2, plate3)
+        if ret is False:
+            send_email()
+        else:
+            print("{} check in".format(name))
